@@ -1,15 +1,18 @@
-// importacoes dos objetos locais
-const {musica, play} = require('./karaoke/player');
+// app.js — Servidor Express da API do Karaokê
+// Disciplina: Programação III - IFSul Campus Passo Fundo
+// Professor: Élder Bernardi
 
-console.log('Titulo da musica: ' + musica.nome);
+// ====================================================================
+// PARTE 1 & PARTE 2: Importações e Configurações Iniciais
+// ====================================================================
 
-
-// 1. Importar o Express
 const express = require('express');
+const { Parte } = require('./karaoke/parte');
+const musicaDAO = require('./DAO/MusicaDAO');
 
 // 2. Criar a aplicação (a "loja")
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 // ====================================================================
 // MIDDLEWARES DE PRÉ-PROCESSAMENTO
@@ -18,20 +21,12 @@ const PORT = process.env.PORT;
 // Middleware para processar requisições com corpo no formato JSON
 app.use(express.json());
 
-// 4. Definir rotas (os "balcões de atendimento")
-app.get('/', (req, res) => {
-    res.send('Servidor funcionando');
-});
+// Parte 7.2: Servir arquivos estáticos do front-end da pasta public/ (index.html, estilo.css, player.js)
+app.use(express.static('public'));
 
-app.get('/teste', (req, res)=>{
-    res.contentType('html');
-    const html = "<html> <body> <b>Este é o meu site Express.js. </body> <html> "
-    res.send(html);
-});
-
-app.post('/testePost', (req,res) => {
-
-} );
+// ====================================================================
+// PARTE 3: Rotas da API para Múltiplas Músicas (/api/musicas)
+// ====================================================================
 
 /**
  * 1. GET /api/musicas
